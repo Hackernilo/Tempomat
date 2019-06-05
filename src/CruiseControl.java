@@ -55,8 +55,8 @@ public class CruiseControl {
 
 	/**
 	 * Diese Funktion ist zum Loggen in der Konsole gedacht. Wenn etwas ausgegeben werden soll auf 
-	 * die Konsolle nehmen wir diese Funktion. Dadurch kann man ganz einfach die Konsolen ausgabe ausschalten. 
-	 * Die Funktion enth‰lt den ausgabe String und ein debuglevel. Um so niedriger die Zahl um so wichtiger, 
+	 * die Konsolle nehmen wir diese Funktion. Dadurch kann man ganz einfach die Konsolenausgabe ausschalten. 
+	 * Die Funktion enth√§lt den Ausgabestring und ein debuglevel. Um so niedriger die Zahl um so wichtiger, 
 	 * ist die Information.
 	 * @param debuglevel Wie wichtig ist die Information 1 ganz wichtig, 5 unwichtig
 	 * @param s Ausgabestring
