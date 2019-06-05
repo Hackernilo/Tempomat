@@ -3,9 +3,10 @@ import cruiseControlSimulator.*;
 
 public class Lever implements Executable {
 	AnalogPort leverAnalogPort;
+	Controller controller;
 	double leverVoltage;
 	// Lever
-	boolean leverTempomat = false;
+	boolean leverCruise = false;
 	boolean leverCancel = false;
 	boolean leverSetMinus = false;
 	boolean leverResPlus = false;
@@ -13,8 +14,9 @@ public class Lever implements Executable {
 	// Error
 	boolean error = false;
 	
-	Lever(AnalogPort analogPort) {
+	Lever(AnalogPort analogPort, Controller ctrl) {
 		leverAnalogPort = analogPort;
+		controller = ctrl;
 	}
 	// Lever Voltage States
 	private double TempomatMin = 1.0;
@@ -39,16 +41,16 @@ public class Lever implements Executable {
 							" getMinVoltage:" + leverAnalogPort.getMinVoltage());
 		this.translate_Analoginput();
 		// Logging for Debugging purposes
-		CruiseControl.log(5, "[LEVER] Tempomat: "+ this.leverTempomat);
+		CruiseControl.log(5, "[LEVER] Tempomat: "+ this.leverCruise);
 		CruiseControl.log(5, "[LEVER] Cancel: "+ this.leverCancel);
 		CruiseControl.log(5, "[LEVER] ResPlus: " + this.leverResPlus);
 		CruiseControl.log(5, "[LEVER] SetMinus: " + this.leverSetMinus);
-		// State Machine Methode je nach Tastendruck aufrufen siehe Script 6
+		
 	}
 	
 	/**
 	 * translates the analoginput signal into the following booleans:
-	 * + leverTempomat
+	 * + leverCruise
 	 * + leverCancel
 	 * + leverResPlus
 	 * + leverSetMinus
@@ -59,7 +61,8 @@ public class Lever implements Executable {
 		if(IdleMin < this.leverVoltage && IdleMax > this.leverVoltage) {
 			this.leverIdle = true;
 		} else if( TempomatMin < this.leverVoltage && TempomatMax > this.leverVoltage) {
-			this.leverTempomat = true;
+			this.leverCruise = true;
+			controller.cruisePressed();
 		} else if(CancelMin < this.leverVoltage && CancelMax > this.leverVoltage) {
 			this.leverCancel = true;
 		} else if(ResPlusMin < this.leverVoltage && ResPlusMax > this.leverVoltage) {
@@ -76,7 +79,7 @@ public class Lever implements Executable {
 	 * resets all Lever booleans
 	 */
 	private void resetLever() {
-		this.leverTempomat = false;
+		this.leverCruise = false;
 		this.leverCancel = false;
 		this.leverResPlus = false;
 		this.leverSetMinus = false;
@@ -85,10 +88,10 @@ public class Lever implements Executable {
 	
 	/**
 	 * @return
-	 * boolean leverTempomat
+	 * boolean leverCruise
 	 */
 	public boolean getTempomat() {
-		return this.leverTempomat;
+		return this.leverCruise;
 	}
 	
 	/**

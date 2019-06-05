@@ -3,18 +3,25 @@ import cruiseControlSimulator.*;
 
 public class ClutchPedal implements Executable {
 	DigitalPort clutchPedal;
-	ClutchPedal(DigitalPort clutch) {
+	Controller controller;
+	ClutchPedal(DigitalPort clutch, Controller c) {
 		clutchPedal = clutch;
+		controller = c;
 	}
 	boolean state = false;
 	public void every100ms() {
-		
+		this.state = clutchPedal.getState();
+		if(this.state) {
+			CruiseControl.log(1, "[Controller] ClutchPressed");
+			controller.cancelPressed();
+		}
 	}
 	public void everyKeypress() {
-		this.state = clutchPedal.getState();
+		
 	}
 	public boolean getClutchPressed() {
 		if(this.state == clutchPedal.getOpenState()) {
+			CruiseControl.log(3, "[ClutchPedal] Clutch pressed");
 			return true;
 		}
 		return false;
